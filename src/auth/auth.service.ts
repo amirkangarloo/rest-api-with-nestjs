@@ -72,7 +72,7 @@ export class AuthService {
     // if the password is not valid
     if (!isTruePassword) {
       throw new UnauthorizedException(
-        'Email is not valid',
+        'Password is not valid',
       );
     }
 
