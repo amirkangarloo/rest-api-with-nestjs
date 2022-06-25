@@ -1,6 +1,7 @@
 import {
   ForbiddenException,
   Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthDto } from './dto';
@@ -11,6 +12,8 @@ import { error } from 'console';
 @Injectable()
 export class AuthService {
   constructor(private prisma: PrismaService) {}
+
+  // sign up logic
   async signup(dto: AuthDto) {
     try {
       // generate the password hash
@@ -43,12 +46,38 @@ export class AuthService {
         }
       }
     }
-    throw error
+    throw error;
   }
 
-  signin() {
-    return {
-      mes: 'I am signin',
-    };
+  // sign in logic
+  async signin(dto: AuthDto) {
+    // find user by email
+    const user =
+      await this.prisma.user.findUnique({
+        where: {
+          email: dto.email,
+        },
+      });
+    
+    // if user is not valid
+    if (!user) {
+      throw new UnauthorizedException(
+        'Email is not valid',
+      );
+    }
+
+    // check the password
+    const isTruePassword = await argon.verify(user.hash, dto.password)
+
+    // if the password is not valid
+    if (!isTruePassword) {
+      throw new UnauthorizedException(
+        'Email is not valid',
+      );
+    }
+
+    // send response
+    delete user.hash
+    return user
   }
 }
