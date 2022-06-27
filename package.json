@@ -6,8 +6,8 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "db:dev:rm": "docker compose rm dev-db -s -f -v",
-    "db:dev:up": "docker compose up dev-db -d",
+    "db:dev:rm": "docker-compose rm dev-db -s -f -v",
+    "db:dev:up": "docker-compose up dev-db",
     "db:dev:restart": "npm run db:dev:rm & npm run db:dev:up",
     "prebuild": "rimraf dist",
     "build": "nest build",
@@ -55,6 +55,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "28.0.3",
+    "pactum": "^3.1.10",
     "prettier": "^2.3.2",
     "prisma": "^3.15.2",
     "source-map-support": "^0.5.20",
